@@ -1,0 +1,5 @@
+#Ignore readme file
+README.txt
+#Ignore output folder
+out/
+.idea
