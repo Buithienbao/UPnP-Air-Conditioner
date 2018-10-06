@@ -47,6 +47,7 @@ public class View implements Initializable{
         powerIcon.setImage( new Image("/resources/images/powerOnBtn.png"));
         statusImg.setImage( new Image("/resources/images/air_con.gif"));
         status.setText("On");
+
     }
 
     @FXML
