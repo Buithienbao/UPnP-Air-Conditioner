@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class View implements Initializable{
-
     private static Boolean isDeviceOn = true;
     public static final List<String> fanModeList = Collections.unmodifiableList(
             new ArrayList<String>() {{
