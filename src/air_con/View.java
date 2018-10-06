@@ -43,7 +43,7 @@ public class View implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        System.out.println("Hihi");
+
         powerIcon.setImage( new Image("/resources/images/powerOnBtn.png"));
         statusImg.setImage( new Image("/resources/images/air_con.gif"));
         status.setText("On");
