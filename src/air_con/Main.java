@@ -7,10 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    static View view;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/air_con/sample.fxml"));
+        Parent root = fxmlLoader.load();
+
+        view = fxmlLoader.getController();
+        Controller controller = new Controller(view);
+        view.setController(controller);
         primaryStage.setTitle("Air conditioner remote");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();

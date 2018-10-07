@@ -1,5 +1,6 @@
 package air_con;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.lang.Integer;
 public class View implements Initializable{
+
+    Controller controller;
     private static Boolean isDeviceOn = true;
     private Integer mode = 0;
     public static final List<String> modeList = Collections.unmodifiableList(
@@ -45,25 +48,31 @@ public class View implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        powerIcon.setImage( new Image("/resources/images/powerOnBtn.png"));
-        statusImg.setImage( new Image("/resources/images/air_con.gif"));
+        powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
+        statusImg.setImage( new Image("/resources/air_con.gif"));
         curTemp.setText("23");
         curMode.setText(modeList.get(1));
         status.setText("On");
         mode = 1;
     }
 
+
+    public void setController(Controller controller)
+    {
+        this.controller = controller;
+    }
+
     @FXML
     private void switchPower(){
         if(isDeviceOn)
         {
-            powerIcon.setImage( new Image("/resources/images/powerOffBtn.png"));
-            statusImg.setImage( new Image("/resources/images/air_con.jpg"));
+            powerIcon.setImage( new Image("/resources/powerOffBtn.png"));
+            statusImg.setImage( new Image("/resources/air_con.jpg"));
             status.setText("Off");
             isDeviceOn = false;
         } else {
-            powerIcon.setImage( new Image("/resources/images/powerOnBtn.png"));
-            statusImg.setImage( new Image("/resources/images/air_con.gif"));
+            powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
+            statusImg.setImage( new Image("/resources/air_con.gif"));
             status.setText("On");
             isDeviceOn = true;
         }
@@ -104,6 +113,28 @@ public class View implements Initializable{
                 this.mode = 0;
                 curMode.setText(modeList.get(this.mode));
             }
+    }
+
+
+    public void onPowerStatusChange(boolean statusPower)
+    {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(!statusPower)
+                {
+                    powerIcon.setImage( new Image("/resources/powerOffBtn.png"));
+                    statusImg.setImage( new Image("/resources/air_con.jpg"));
+                    status.setText("Off");
+                    isDeviceOn = false;
+                } else {
+                    powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
+                    statusImg.setImage( new Image("/resources/air_con.gif"));
+                    status.setText("On");
+                    isDeviceOn = true;
+                }
+            }
+        });
     }
 }
 
