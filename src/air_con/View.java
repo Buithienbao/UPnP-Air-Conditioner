@@ -11,13 +11,15 @@ import java.util.ResourceBundle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import java.lang.Integer;
 public class View implements Initializable{
     private static Boolean isDeviceOn = true;
-    public static final List<String> fanModeList = Collections.unmodifiableList(
+    private Integer mode = 0;
+    public static final List<String> modeList = Collections.unmodifiableList(
             new ArrayList<String>() {{
-                add("dry");
-                add("heat");
+                add("Dry");
+                add("Auto");
+                add("Cool");
                 // etc
             }});
 
@@ -28,11 +30,11 @@ public class View implements Initializable{
     @FXML
     Button tempDeBtn;
     @FXML
-    Button fanBtn;
+    Button modeBtn;
     @FXML
     Label curTemp;
     @FXML
-    Label curFanMode;
+    Label curMode;
     @FXML
     Label status;
     @FXML
@@ -45,7 +47,10 @@ public class View implements Initializable{
 
         powerIcon.setImage( new Image("/resources/images/powerOnBtn.png"));
         statusImg.setImage( new Image("/resources/images/air_con.gif"));
+        curTemp.setText("23");
+        curMode.setText(modeList.get(1));
         status.setText("On");
+        mode = 1;
     }
 
     @FXML
@@ -63,4 +68,45 @@ public class View implements Initializable{
             isDeviceOn = true;
         }
     }
+
+    @FXML
+    private void increaseTemp(){
+        int temp;
+        temp = Integer.parseInt(curTemp.getText());
+        if (isDeviceOn && temp < 32)
+        {
+            curTemp.setText(String.valueOf(temp+1));
+        } else {
+        }
+    }
+
+    @FXML
+    private void decreaseTemp(){
+        int temp;
+        temp = Integer.parseInt(curTemp.getText());
+        if (isDeviceOn && temp > 16)
+        {
+            curTemp.setText(String.valueOf(temp-1));
+        } else {
+
+        }
+    }
+
+    @FXML
+    private void changeMode(){
+        if(!isDeviceOn) return;
+        if(this.mode == 1 || this.mode == 0)
+        {
+            this.mode++;
+            curMode.setText(modeList.get(this.mode));
+        } else if(this.mode == 2)
+            {
+                this.mode = 0;
+                curMode.setText(modeList.get(this.mode));
+            }
+    }
 }
+
+
+
+
