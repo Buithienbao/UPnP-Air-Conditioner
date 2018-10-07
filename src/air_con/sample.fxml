@@ -30,8 +30,8 @@
                   <Label fx:id="curTemp" prefHeight="67.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label prefHeight="67.0" prefWidth="120.0" text="Status" />
                   <Label fx:id="status" prefHeight="67.0" prefWidth="117.0" GridPane.columnIndex="1" />
-                  <Label prefHeight="66.0" prefWidth="120.0" text="Fan mode" GridPane.rowIndex="2" />
-                  <Label fx:id="curFanMode" prefHeight="66.0" prefWidth="116.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label prefHeight="66.0" prefWidth="120.0" text="Mode" GridPane.rowIndex="2" />
+                  <Label fx:id="curMode" prefHeight="66.0" prefWidth="116.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <HBox prefHeight="200.0" prefWidth="342.0">
@@ -62,7 +62,7 @@
                      </graphic>
                   </Button>
                   <ImageView fitHeight="91.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="fanBtn" mnemonicParsing="false" prefHeight="74.0" prefWidth="75.0" style="-fx-background-radius: 100;">
+                  <Button fx:id="modeBtn" mnemonicParsing="false" onAction="#changeMode" prefHeight="74.0" prefWidth="75.0" style="-fx-background-radius: 100;">
                      <graphic>
                         <ImageView fitHeight="63.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -76,7 +76,7 @@
             <HBox layoutX="-1.0" layoutY="112.0" prefHeight="96.0" prefWidth="600.0">
                <children>
                   <ImageView fitHeight="97.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="tempDeBtn" mnemonicParsing="false" prefHeight="74.0" prefWidth="75.0" style="-fx-background-radius: 100;">
+                  <Button fx:id="tempDeBtn" mnemonicParsing="false" onAction="#decreaseTemp" prefHeight="74.0" prefWidth="75.0" style="-fx-background-radius: 100;">
                      <graphic>
                         <ImageView fitHeight="65.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -86,7 +86,7 @@
                      </graphic>
                   </Button>
                   <ImageView fitHeight="92.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="tempInBtn" mnemonicParsing="false" prefHeight="74.0" prefWidth="75.0" style="-fx-background-radius: 100;">
+                  <Button fx:id="tempInBtn" mnemonicParsing="false" onAction="#increaseTemp" prefHeight="74.0" prefWidth="75.0" style="-fx-background-radius: 100;">
                      <graphic>
                         <ImageView fitHeight="65.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                            <image>
