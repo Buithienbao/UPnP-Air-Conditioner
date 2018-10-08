@@ -1,6 +1,6 @@
 package air_con;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
