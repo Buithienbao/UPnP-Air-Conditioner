@@ -50,7 +50,7 @@ public class Constant {
 
 
 
-    public static final String AC_ICON = "/resources/toshiba.jpg";
+    public static final String AC_ICON = "/resources/air_icon.jpg";
 
 
 }

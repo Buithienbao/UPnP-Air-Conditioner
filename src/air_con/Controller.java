@@ -268,7 +268,7 @@ public class Controller {
         DeviceDetails deviceDetails = new DeviceDetails(Constant.DEVICE_NAME, new ManufacturerDetails(Constant.MANUFACTURER_DETAILS),
                 new ModelDetails(Constant.MODEL_DETAILS, Constant.MODEL_DESCRIPTION, Constant.MODEL_NUMBER));
 
-        Icon icon = new Icon("image/jpg", 1,1, 10, getClass().getResource(Constant.AC_ICON));
+        Icon icon = new Icon("image/jpg", 1,1, 1, getClass().getResource(Constant.AC_ICON));
 
         LocalService<SwitchPower> switchPowerLocalService = new AnnotationLocalServiceBinder().read(SwitchPower.class);
         switchPowerLocalService.setManager(new DefaultServiceManager<>(switchPowerLocalService, SwitchPower.class));
