@@ -93,6 +93,47 @@ public class Controller {
         }
     };
 
+    private SubscriptionCallback createFanControlSubscriptionCallBack(Service service)
+    {
+        return new SubscriptionCallback() {
+            @Override
+            protected void failed(GENASubscription genaSubscription, UpnpResponse upnpResponse, Exception e, String s) {
+
+            }
+
+            @Override
+            protected void established(GENASubscription genaSubscription) {
+                System.out.println("Service Fan mode control created");
+            }
+
+            @Override
+            protected void ended(GENASubscription genaSubscription, CancelReason cancelReason, UpnpResponse upnpResponse) {
+
+            }
+
+            @Override
+            protected void eventReceived(GENASubscription genaSubscription) {
+                System.out.println("Event : " + genaSubscription.getCurrentSequence().getValue());
+                Map<String , StateVariableValue> values = genaSubscription.getCurrentValues();
+                for(String key: values.keySet())
+                {
+                    System.out.println("" + key + " changed");
+                }
+
+                if(values.containsKey(Constant.FAN_MODE))
+                {
+                    int fanMode = (int) values.get(Constant.FAN_MODE).getValue();
+
+                }
+            }
+
+            @Override
+            protected void eventsMissed(GENASubscription genaSubscription, int i) {
+                System.out.println("number of events missed : " + i);
+            }
+        };
+    }
+
     private SubscriptionCallback createTempControlSubscriptionCallBack(Service service)
     {
         return new SubscriptionCallback(service, Integer.MAX_VALUE) {

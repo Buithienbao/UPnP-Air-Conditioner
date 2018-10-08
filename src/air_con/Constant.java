@@ -25,7 +25,7 @@ public class Constant {
 
     //temprature control service
     public static final String TEMP_CONTROL = "TempControl";
-    public static final String TEMPERATURE = "TempControl";
+    public static final String TEMPERATURE = "Temperature";
     public static final String GET_TEMPERATURE = "GetTemperature";
     public static final String SET_TEMPERATURE = "SetTemperature";
     public static final String INCREASE_TEMPERATURE = "IncreaseTemperature";
@@ -35,25 +35,18 @@ public class Constant {
     public static final int MAX_TEMP = 31;
 
 
-    //Fan control service
+    //Mode Control
     public static final String FAN_CONTROL = "FanControl";
-    public static final String FAN_STRENGTH = "FanStrength";
-    public static final String GET_FAN_STRENGTH = "GetFanStrength";
-    public static final String SET_FAN_STRENGTH = "SetFanStrength";
-    public static final String INCREASE_FAN = "IncreaseFan";
-    public static final String DECREASE_FAN = "DecreaseFan";
-    public static final String CHANGE_FAN_DIRECTION = "ChangeFanDirection";
-    public static final String UP_FAN_DIRECTION = "UpFanDirection";
-    public static final String DOWN_FAN_DIRECTION = "DownFanDirection";
+    public static final String FAN_MODE = "FanMode";
+    public static final String GET_FAN_MODE = "GetFanMode";
+    public static final String SET_FAN_MODE = "GetFanMode";
+    public static final String CHANGE_FAN_MODE = "ChangeFanMode";
 
-    public static final int DEFAULT_FAN_STRENGTH = 5;
-    public static final int MAX_FAN_STRENGTH = 5;
-    public static final int MIN_FAN_STRENGTH = 0;
-    public static final int FAN_STRENGTH_CHANGE = 1;
-    public static final int DEFAULT_FAN_DIRECTION = 3;
-    public static final int MAX_FAN_DIRECTION = 5;
-    public static final int MIN_FAN_DIRECTION = 1;
-    public static final int FAN_DIRECTION_CHANGE = 1;
+//    public static final i
+    public static final int FAN_MODE_DEFAULT = 0;
+    public static final int FAN_MODE_STEP = 1;
+    public static final int MAX_FAN = 2;
+    public static final int MIN_FAN = 0;
 
 
 

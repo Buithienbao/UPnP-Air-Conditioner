@@ -83,7 +83,7 @@ public class View implements Initializable{
     private void increaseTemp(){
         int temp;
         temp = Integer.parseInt(curTemp.getText());
-        if (isDeviceOn && temp < Constant.MAX_TEMP)
+        if (isDeviceOn && temp + 1 <= Constant.MAX_TEMP)
         {
             curTemp.setText(String.valueOf(temp+1));
             controller.increaseTemperature();
@@ -95,7 +95,7 @@ public class View implements Initializable{
     private void decreaseTemp(){
         int temp;
         temp = Integer.parseInt(curTemp.getText());
-        if (isDeviceOn && temp > Constant.MIN_TEMP)
+        if (isDeviceOn && temp - 1 >= Constant.MIN_TEMP)
         {
             curTemp.setText(String.valueOf(temp-1));
             controller.decreaseTemperature();
@@ -106,16 +106,28 @@ public class View implements Initializable{
 
     @FXML
     private void changeMode(){
+//        if(!isDeviceOn) return;
+//        if(this.mode == 1 || this.mode == 0)
+//        {
+//            this.mode++;
+//            curMode.setText(modeList.get(this.mode));
+//        } else if(this.mode == 2)
+//            {
+//                this.mode = 0;
+//                curMode.setText(modeList.get(this.mode));
+//            }
         if(!isDeviceOn) return;
-        if(this.mode == 1 || this.mode == 0)
+        this.mode = (this.mode + 1)%3;
+        curMode.setText(modeList.get(this.mode));
+    }
+
+    private void onSetMode(int fanMode)
+    {
+        if( fanMode >= Constant.MIN_FAN && fanMode <= Constant.MAX_FAN)
         {
-            this.mode++;
+            this.mode = fanMode;
             curMode.setText(modeList.get(this.mode));
-        } else if(this.mode == 2)
-            {
-                this.mode = 0;
-                curMode.setText(modeList.get(this.mode));
-            }
+        }
     }
 
 

@@ -104,4 +104,24 @@ public class ActionExecutor {
     }
 
 
+    public void changeFanMode(UpnpService upnpService, Service service)
+    {
+        ActionInvocation actionInvocation = new ActionInvocation(service.getAction(Constant.CHANGE_FAN_MODE));
+        upnpService.getControlPoint().execute(
+                new ActionCallback(actionInvocation) {
+                    @Override
+                    public void success(ActionInvocation actionInvocation) {
+                        assert actionInvocation.getOutput().length == 0;
+                        System.out.println("Call function change fan mode successfully!");
+                    }
+
+                    @Override
+                    public void failure(ActionInvocation actionInvocation, UpnpResponse upnpResponse, String s) {
+                        System.err.println(s);
+                    }
+                }
+        );
+    }
+
+
 }
