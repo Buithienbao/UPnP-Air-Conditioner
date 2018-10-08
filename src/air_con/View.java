@@ -1,5 +1,6 @@
 package air_con;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -50,7 +51,7 @@ public class View implements Initializable{
 
         powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
         statusImg.setImage( new Image("/resources/air_con.gif"));
-        curTemp.setText("23");
+        curTemp.setText(Integer.toString(Constant.DEFAULT_TEMP));
         curMode.setText(modeList.get(1));
         status.setText("On");
         mode = 1;
@@ -82,9 +83,10 @@ public class View implements Initializable{
     private void increaseTemp(){
         int temp;
         temp = Integer.parseInt(curTemp.getText());
-        if (isDeviceOn && temp < 32)
+        if (isDeviceOn && temp < Constant.MAX_TEMP)
         {
             curTemp.setText(String.valueOf(temp+1));
+            controller.increaseTemperature();
         } else {
         }
     }
@@ -93,9 +95,10 @@ public class View implements Initializable{
     private void decreaseTemp(){
         int temp;
         temp = Integer.parseInt(curTemp.getText());
-        if (isDeviceOn && temp > 16)
+        if (isDeviceOn && temp > Constant.MIN_TEMP)
         {
             curTemp.setText(String.valueOf(temp-1));
+            controller.decreaseTemperature();
         } else {
 
         }
@@ -132,6 +135,20 @@ public class View implements Initializable{
                     statusImg.setImage( new Image("/resources/air_con.gif"));
                     status.setText("On");
                     isDeviceOn = true;
+                }
+            }
+        });
+    }
+
+
+    public void onTemperatureChange(int temperature)
+    {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(temperature <= Constant.MAX_TEMP && temperature >= Constant.MIN_TEMP)
+                {
+                    curTemp.setText(Integer.toString(temperature));
                 }
             }
         });

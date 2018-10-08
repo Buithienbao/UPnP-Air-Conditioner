@@ -3,11 +3,9 @@ package air_con;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.fourthline.cling.UpnpService;
-import org.fourthline.cling.UpnpServiceConfiguration;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.LocalServiceBindingException;
 import org.fourthline.cling.binding.annotations.AnnotationLocalServiceBinder;
-import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.controlpoint.SubscriptionCallback;
 import org.fourthline.cling.model.DefaultServiceManager;
 import org.fourthline.cling.model.ValidationException;
@@ -21,18 +19,14 @@ import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDAServiceId;
 import org.fourthline.cling.model.types.UDN;
-import org.fourthline.cling.protocol.ProtocolFactory;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
-import org.fourthline.cling.transport.Router;
-import sun.util.locale.LocaleSyntaxException;
+import service.SwitchPower;
+import service.TempControl;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.util.Map;
-import java.util.ServiceConfigurationError;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -53,11 +47,12 @@ public class Controller {
                 System.out.println("" + Constant.MODEL_DESCRIPTION + " is detected");
                 device = remoteDevice;
                 upnpService.getControlPoint().execute(createPowerSwitchSubscriptionCallBack(getServiceById(device, Constant.SWITCH_POWER)));
+                upnpService.getControlPoint().execute(createTempControlSubscriptionCallBack(getServiceById(device, Constant.TEMP_CONTROL)));
                 Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
                     @Override
                     public void run() {
                         setPowerStatus(Constant.POWER_STATUS_DEFAULT);
-
+                        setTemperature(Constant.DEFAULT_TEMP);
                     }
                 }, 500, TimeUnit.MILLISECONDS);
             }
@@ -76,11 +71,12 @@ public class Controller {
                 System.out.println("" + Constant.MODEL_DETAILS + " is detected\n");
                 device = localDevice;
                 upnpService.getControlPoint().execute(createPowerSwitchSubscriptionCallBack(getServiceById(device, Constant.SWITCH_POWER)));
+                upnpService.getControlPoint().execute(createTempControlSubscriptionCallBack(getServiceById(device, Constant.TEMP_CONTROL)));
                 Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
                     @Override
                     public void run() {
                         setPowerStatus(Constant.POWER_STATUS_DEFAULT);
-
+                        setTemperature(Constant.DEFAULT_TEMP);
                     }
                 }, 500, TimeUnit.MILLISECONDS);
             }
@@ -96,6 +92,47 @@ public class Controller {
             }
         }
     };
+
+    private SubscriptionCallback createTempControlSubscriptionCallBack(Service service)
+    {
+        return new SubscriptionCallback(service, Integer.MAX_VALUE) {
+            @Override
+            protected void failed(GENASubscription genaSubscription, UpnpResponse upnpResponse, Exception e, String s) {
+
+            }
+
+            @Override
+            protected void established(GENASubscription genaSubscription) {
+                System.out.println("Temperature control is created");
+            }
+
+            @Override
+            protected void ended(GENASubscription genaSubscription, CancelReason cancelReason, UpnpResponse upnpResponse) {
+
+            }
+
+            @Override
+            protected void eventReceived(GENASubscription genaSubscription) {
+                System.out.println("Event: " + genaSubscription.getCurrentSequence().getValue());
+                Map<String, StateVariableValue> values = genaSubscription.getCurrentValues();
+                for(String key: values.keySet()){
+                    System.out.println(key + "changed.");
+                }
+
+                if(values.containsKey(Constant.TEMPERATURE))
+                {
+                    int temp = (int) values.get(Constant.TEMPERATURE).getValue();
+                    view.onTemperatureChange(temp);
+                    System.out.println("New value : " + temp);
+                }
+            }
+
+            @Override
+            protected void eventsMissed(GENASubscription genaSubscription, int i) {
+                System.out.println("Number of events missed is " + i);
+            }
+        };
+    }
 
     private SubscriptionCallback createPowerSwitchSubscriptionCallBack(Service service)
     {
@@ -189,8 +226,10 @@ public class Controller {
         LocalService<SwitchPower> switchPowerLocalService = new AnnotationLocalServiceBinder().read(SwitchPower.class);
         switchPowerLocalService.setManager(new DefaultServiceManager<>(switchPowerLocalService, SwitchPower.class));
 
+        LocalService<TempControl> tempControlLocalService = new AnnotationLocalServiceBinder().read(TempControl.class);
+        tempControlLocalService.setManager(new DefaultServiceManager<>(tempControlLocalService, TempControl.class));
 
-        return new LocalDevice(deviceIdentity, deviceType, deviceDetails, icon, new LocalService[]{switchPowerLocalService});
+        return new LocalDevice(deviceIdentity, deviceType, deviceDetails, icon, new LocalService[]{switchPowerLocalService, tempControlLocalService});
     }
 
 
@@ -201,6 +240,34 @@ public class Controller {
         {
             actionExecutor.setPowerStatus(upnpService, service, status);
             //TODO next
+        }
+    }
+
+    public void setTemperature(int temp)
+    {
+        Service service = getServiceById(device, Constant.TEMP_CONTROL);
+        if(service != null)
+        {
+            actionExecutor.setTemperature(upnpService, service, temp);
+        }
+    }
+
+    public void increaseTemperature()
+    {
+        Service service = getServiceById(device, Constant.TEMP_CONTROL);
+        if(service != null)
+        {
+            actionExecutor.increaseTemperature(upnpService, service);
+        }
+    }
+
+
+    public void decreaseTemperature()
+    {
+        Service service = getServiceById(device, Constant.TEMP_CONTROL);
+        if(service != null)
+        {
+            actionExecutor.decreaseTemperature(upnpService, service);
         }
     }
 }

@@ -25,12 +25,12 @@ public class Constant {
 
     //temprature control service
     public static final String TEMP_CONTROL = "TempControl";
-    public static final String TEMPERATURE = "Temperature";
+    public static final String TEMPERATURE = "TempControl";
     public static final String GET_TEMPERATURE = "GetTemperature";
     public static final String SET_TEMPERATURE = "SetTemperature";
     public static final String INCREASE_TEMPERATURE = "IncreaseTemperature";
     public static final String DECREASE_TEMPERATURE = "DecreaseTemperature";
-
+    public static final int DEFAULT_TEMP = 20;
     public static final int MIN_TEMP = 16;
     public static final int MAX_TEMP = 31;
 
