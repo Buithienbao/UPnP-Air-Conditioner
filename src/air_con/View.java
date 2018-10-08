@@ -50,7 +50,7 @@ public class View implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
 
         powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
-        statusImg.setImage( new Image("/resources/air_con.gif"));
+        statusImg.setImage( new Image("/resources/air_con1.jpg"));
         curTemp.setText(Integer.toString(Constant.DEFAULT_TEMP));
         curMode.setText(modeList.get(1));
         status.setText("On");
@@ -73,7 +73,7 @@ public class View implements Initializable{
             isDeviceOn = false;
         } else {
             powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
-            statusImg.setImage( new Image("/resources/air_con.gif"));
+            statusImg.setImage( new Image("/resources/air_con1.jpg"));
             status.setText("On");
             isDeviceOn = true;
         }
@@ -151,7 +151,7 @@ public class View implements Initializable{
                     isDeviceOn = false;
                 } else {
                     powerIcon.setImage( new Image("/resources/powerOnBtn.png"));
-                    statusImg.setImage( new Image("/resources/air_con.gif"));
+                    statusImg.setImage( new Image("/resources/air_con1.jpg"));
                     status.setText("On");
                     isDeviceOn = true;
                 }

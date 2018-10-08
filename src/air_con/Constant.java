@@ -3,10 +3,10 @@ package air_con;
 public class Constant {
 
     //device
-    public static final String DEVICE_NAME = "AirconditionalSystem";
+    public static final String DEVICE_NAME = "AirconditionerSystem";
     public static final String MANUFACTURER_DETAILS = "2018";
-    public static final String MODEL_DETAILS = "TOSHIBA2018";
-    public static final String MODEL_DESCRIPTION = "Air-Conditional System";
+    public static final String MODEL_DETAILS = "SAMSUNG2018";
+    public static final String MODEL_DESCRIPTION = "Air-Conditioner System";
     public static final String MODEL_NUMBER = "21111996";
 
     //switchpower
