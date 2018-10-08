@@ -31,13 +31,23 @@ public class FanControl {
             defaultValue = "0",
             allowedValueMaximum = Constant.MAX_FAN,
             allowedValueMinimum = Constant.MIN_FAN
-    ) private int fan_mode;
+    ) private int fanMode;
 
 
     @UpnpAction
     public void changeFanMode()
     {
-        fan_mode = (fan_mode + 1)%3;
+        fanMode = (fanMode + 1)%3;
         getPropertyChangeSupport().firePropertyChange(Constant.FAN_MODE, null, null);
+    }
+
+    @UpnpAction
+    public void setFanMode(@UpnpInputArgument(name = Constant.FAN_MODE)int fanMode)
+    {
+        if(fanMode <= Constant.MAX_FAN && fanMode >= Constant.MIN_FAN)
+        {
+            this.fanMode = fanMode;
+            getPropertyChangeSupport().firePropertyChange(Constant.FAN_MODE, null, null);
+        }
     }
 }

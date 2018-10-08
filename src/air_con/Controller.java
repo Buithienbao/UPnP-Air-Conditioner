@@ -22,6 +22,7 @@ import org.fourthline.cling.model.types.UDN;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
+import service.FanControl;
 import service.SwitchPower;
 import service.TempControl;
 
@@ -48,11 +49,13 @@ public class Controller {
                 device = remoteDevice;
                 upnpService.getControlPoint().execute(createPowerSwitchSubscriptionCallBack(getServiceById(device, Constant.SWITCH_POWER)));
                 upnpService.getControlPoint().execute(createTempControlSubscriptionCallBack(getServiceById(device, Constant.TEMP_CONTROL)));
+                upnpService.getControlPoint().execute(createFanControlSubscriptionCallBack(getServiceById(device, Constant.FAN_CONTROL)));
                 Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
                     @Override
                     public void run() {
                         setPowerStatus(Constant.POWER_STATUS_DEFAULT);
                         setTemperature(Constant.DEFAULT_TEMP);
+                        setFanMode(Constant.FAN_MODE_DEFAULT);
                     }
                 }, 500, TimeUnit.MILLISECONDS);
             }
@@ -72,11 +75,13 @@ public class Controller {
                 device = localDevice;
                 upnpService.getControlPoint().execute(createPowerSwitchSubscriptionCallBack(getServiceById(device, Constant.SWITCH_POWER)));
                 upnpService.getControlPoint().execute(createTempControlSubscriptionCallBack(getServiceById(device, Constant.TEMP_CONTROL)));
+                upnpService.getControlPoint().execute(createFanControlSubscriptionCallBack(getServiceById(device, Constant.FAN_CONTROL)));
                 Executors.newSingleThreadScheduledExecutor().schedule(new Runnable() {
                     @Override
                     public void run() {
                         setPowerStatus(Constant.POWER_STATUS_DEFAULT);
                         setTemperature(Constant.DEFAULT_TEMP);
+                        setFanMode(Constant.FAN_MODE_DEFAULT);
                     }
                 }, 500, TimeUnit.MILLISECONDS);
             }
@@ -95,7 +100,7 @@ public class Controller {
 
     private SubscriptionCallback createFanControlSubscriptionCallBack(Service service)
     {
-        return new SubscriptionCallback() {
+        return new SubscriptionCallback(service, Integer.MAX_VALUE) {
             @Override
             protected void failed(GENASubscription genaSubscription, UpnpResponse upnpResponse, Exception e, String s) {
 
@@ -123,7 +128,8 @@ public class Controller {
                 if(values.containsKey(Constant.FAN_MODE))
                 {
                     int fanMode = (int) values.get(Constant.FAN_MODE).getValue();
-
+                    view.onSetMode(fanMode);
+                    System.out.println("New mode: "+View.modeList.get(fanMode));
                 }
             }
 
@@ -262,7 +268,7 @@ public class Controller {
         DeviceDetails deviceDetails = new DeviceDetails(Constant.DEVICE_NAME, new ManufacturerDetails(Constant.MANUFACTURER_DETAILS),
                 new ModelDetails(Constant.MODEL_DETAILS, Constant.MODEL_DESCRIPTION, Constant.MODEL_NUMBER));
 
-        Icon icon = new Icon("image/jpg", 1,1, 2, getClass().getResource(Constant.AC_ICON));
+        Icon icon = new Icon("image/jpg", 1,1, 10, getClass().getResource(Constant.AC_ICON));
 
         LocalService<SwitchPower> switchPowerLocalService = new AnnotationLocalServiceBinder().read(SwitchPower.class);
         switchPowerLocalService.setManager(new DefaultServiceManager<>(switchPowerLocalService, SwitchPower.class));
@@ -270,7 +276,10 @@ public class Controller {
         LocalService<TempControl> tempControlLocalService = new AnnotationLocalServiceBinder().read(TempControl.class);
         tempControlLocalService.setManager(new DefaultServiceManager<>(tempControlLocalService, TempControl.class));
 
-        return new LocalDevice(deviceIdentity, deviceType, deviceDetails, icon, new LocalService[]{switchPowerLocalService, tempControlLocalService});
+        LocalService<FanControl> fanControlLocalService = new AnnotationLocalServiceBinder().read(FanControl.class);
+        fanControlLocalService.setManager(new DefaultServiceManager<>(fanControlLocalService, FanControl.class));
+        return new LocalDevice(deviceIdentity, deviceType, deviceDetails, icon, new LocalService[]{switchPowerLocalService,
+                tempControlLocalService, fanControlLocalService});
     }
 
 
@@ -309,6 +318,16 @@ public class Controller {
         if(service != null)
         {
             actionExecutor.decreaseTemperature(upnpService, service);
+        }
+    }
+
+
+    public void setFanMode(int mode)
+    {
+        Service service = getServiceById(device, Constant.FAN_CONTROL);
+        if(service != null)
+        {
+            actionExecutor.setFanMode(upnpService, service, mode);
         }
     }
 }

@@ -118,16 +118,23 @@ public class View implements Initializable{
 //            }
         if(!isDeviceOn) return;
         this.mode = (this.mode + 1)%3;
+        controller.setFanMode(this.mode);
         curMode.setText(modeList.get(this.mode));
     }
 
-    private void onSetMode(int fanMode)
+    public void onSetMode(int fanMode)
     {
-        if( fanMode >= Constant.MIN_FAN && fanMode <= Constant.MAX_FAN)
-        {
-            this.mode = fanMode;
-            curMode.setText(modeList.get(this.mode));
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if( fanMode >= Constant.MIN_FAN && fanMode <= Constant.MAX_FAN)
+                {
+                    mode = fanMode;
+                    curMode.setText(modeList.get(mode));
+                }
+            }
+        });
+
     }
 
 

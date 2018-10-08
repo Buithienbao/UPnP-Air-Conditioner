@@ -39,7 +39,7 @@ public class Constant {
     public static final String FAN_CONTROL = "FanControl";
     public static final String FAN_MODE = "FanMode";
     public static final String GET_FAN_MODE = "GetFanMode";
-    public static final String SET_FAN_MODE = "GetFanMode";
+    public static final String SET_FAN_MODE = "SetFanMode";
     public static final String CHANGE_FAN_MODE = "ChangeFanMode";
 
 //    public static final i
