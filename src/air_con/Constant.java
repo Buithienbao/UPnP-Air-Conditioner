@@ -18,7 +18,7 @@ public class Constant {
     public static final String SET_TARGET = "SetTarget";
     public static final String GET_TARGET = "GetTarget";
     public static final String NEW_TARGET_VALUE = "NewTargetValue";
-    public static final String RET_TARGET_VALUe = "RetTargetValue";
+    public static final String RET_TARGET_VALUE = "RetTargetValue";
     public static final String RESULT_STATUS = "ResultStatus";
     public static final String TURN_ON = "TurnOn";
 

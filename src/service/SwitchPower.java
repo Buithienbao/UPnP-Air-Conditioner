@@ -33,12 +33,22 @@ public class SwitchPower {
     private boolean status = false;
 
     @UpnpAction
-    public void setTarget(@UpnpInputArgument(name = Constant.TURN_ON) boolean newTargetValue)
+    public void setTarget(@UpnpInputArgument(name = Constant.NEW_TARGET_VALUE) boolean newTargetValue)
     {
         boolean targetOldValue = target;
         target = newTargetValue;
         boolean statusOldValue = status;
         status = newTargetValue;
         getPropertyChangeSupport().firePropertyChange(Constant.STATUS, null, null);
+    }
+
+    @UpnpAction(out = @UpnpOutputArgument(name = Constant.RET_TARGET_VALUE))
+    public boolean getTarget() {
+        return target;
+    }
+
+    @UpnpAction(out = @UpnpOutputArgument(name = Constant.RESULT_STATUS))
+    public boolean getStatus() {
+        return status;
     }
 }
